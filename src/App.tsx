@@ -32,13 +32,17 @@ const heroSlides = [
 
 function HeroCarousel() {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 1000);
+    heroSlides.forEach(slide => {
+      const image = new Image();
+      image.src = slide.src;
+    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 500);
     return () => window.clearInterval(timer);
-  }, [paused]);
+  }, []);
 
   const showPrevious = () => setActive(current => (current - 1 + heroSlides.length) % heroSlides.length);
   const showNext = () => setActive(current => (current + 1) % heroSlides.length);
@@ -48,23 +52,16 @@ function HeroCarousel() {
       className="hero"
       aria-roledescription="carousel"
       aria-label="BrainSmart School highlights"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
     >
       <div className="hero-slides">
         {heroSlides.map((slide, index) => (
-          <motion.img
+          <img
             key={slide.src}
             className={`hero-slide ${index === active ? 'active' : ''}`}
             src={slide.src}
             alt={index === active ? slide.alt : ''}
             loading={index === 0 ? 'eager' : 'lazy'}
             fetchPriority={index === 0 ? 'high' : 'auto'}
-            initial={false}
-            animate={{ opacity: index === active ? 1 : 0, scale: index === active ? 1 : 1.025 }}
-            transition={{ duration: 0.75 }}
             aria-hidden={index !== active}
           />
         ))}
