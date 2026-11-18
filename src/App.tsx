@@ -39,7 +39,6 @@ function HeroCarousel() {
       image.src = slide.src;
     });
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 500);
     return () => window.clearInterval(timer);
   }, []);
