@@ -39,7 +39,7 @@ function HeroCarousel() {
       image.src = slide.src;
     });
 
-    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 500);
+    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 3000);
     return () => window.clearInterval(timer);
   }, []);
 
