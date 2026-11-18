@@ -8,7 +8,7 @@ export const school = {
   description: 'A thoughtful school community dedicated to purposeful learning, meaningful relationships and a future-ready education.',
   mission: 'To create the conditions for every learner to become a confident thinker, generous collaborator and lifelong learner.',
   vision: 'A learning community where curiosity is protected, potential is nurtured and every future feels possible.',
-  contact: { email: 'hello@example.com', phone: '+00 000 000 0000', address: 'School address to be confirmed' },
+  contact: { email: '', phone: '', address: 'Official school address to be confirmed' },
 };
 
 export const nav = [

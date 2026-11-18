@@ -8,6 +8,19 @@ const image = '/images/students-learning.jpg';
 
 function Header() {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
   return <><div className="announcement"><span>Announcement</span><strong>Admissions information is coming soon.</strong><Link to="/admissions">Explore the process <ArrowUpRight size={14} /></Link></div>
     <header className="site-header"><Link to="/" className="brand" onClick={() => setOpen(false)} aria-label="BrainSmart School home"><img className="brand-logo" src="/images/school-logo.jpg" alt="" /><span><b>BrainSmart</b><small>Elementary School</small></span></Link>
       <nav className="desktop-nav">{nav.map(item => <NavLink key={item.to} to={item.to} className={({ isActive }) => isActive ? 'active' : ''}>{item.label}</NavLink>)}</nav>
@@ -17,7 +30,7 @@ function Header() {
     <AnimatePresence>{open && <motion.nav className="mobile-nav" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>{nav.map(item => <Link key={item.to} to={item.to} onClick={() => setOpen(false)}>{item.label}<ArrowUpRight size={16} /></Link>)}<Link to="/contact" onClick={() => setOpen(false)}>Contact <ArrowUpRight size={16} /></Link></motion.nav>}</AnimatePresence></>;
 }
 
-function Footer() { return <footer><div className="footer-main"><div><Link to="/" className="brand inverse" aria-label="BrainSmart School home"><img className="brand-logo footer-logo" src="/images/school-logo.jpg" alt="" /><span><b>BrainSmart</b><small>Elementary School</small></span></Link><p className="footer-copy">{school.description}</p></div><div className="footer-links"><div><span className="footer-label">Explore</span><Link to="/about">About us</Link><Link to="/academics">Academics</Link><Link to="/students">Student life</Link></div><div><span className="footer-label">Connect</span><Link to="/parents">For families</Link><Link to="/news">News & events</Link><Link to="/contact">Contact</Link></div></div><div className="footer-contact"><span className="footer-label">Start a conversation</span><a href={`mailto:${school.contact.email}`}>{school.contact.email}</a><span>{school.contact.address}</span></div></div><div className="footer-bottom"><span>© 2025 BrainSmart School</span><Link to="/privacy">Privacy policy</Link></div></footer>; }
+function Footer() { return <><footer><div className="footer-main"><div><Link to="/" className="brand inverse" aria-label="BrainSmart School home"><img className="brand-logo footer-logo" src="/images/school-logo.jpg" alt="" /><span><b>BrainSmart</b><small>Elementary School</small></span></Link><p className="footer-copy">{school.description}</p></div><div className="footer-links"><div><span className="footer-label">Explore</span><Link to="/about">About us</Link><Link to="/academics">Academics</Link><Link to="/students">Student life</Link></div><div><span className="footer-label">Connect</span><Link to="/parents">For families</Link><Link to="/news">News & events</Link><Link to="/contact">Contact</Link></div></div><div className="footer-contact"><span className="footer-label">Start a conversation</span><Link to="/contact">Request official contact details</Link><span>{school.contact.address}</span></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} BrainSmart Elementary School</span><Link to="/privacy">Privacy policy</Link></div></footer><button type="button" className="back-to-top" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Top <ArrowUpRight size={14} /></button></>; }
 
 function Button({ to, children, secondary = false }: { to: string; children: React.ReactNode; secondary?: boolean }) { return <Link className={`button ${secondary ? 'secondary' : ''}`} to={to}>{children}<ArrowUpRight size={16} /></Link>; }
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) { return <motion.div className={className} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-70px' }} transition={{ duration: .6 }}>{children}</motion.div>; }
@@ -103,7 +116,7 @@ function Home() { return <><HeroCarousel />
     <section className="section"><div className="container family-cta"><div><SectionTitle kicker="For families" title="A clear next step starts here." copy="Find the practical information you need, or tell us how we can help." /><Button to="/parents">Family hub</Button></div><div className="family-photo"><img src="/images/family-learning.jpg" alt="A teacher supporting a student" loading="lazy" /><span><Check size={16} /> Questions are welcome</span></div></div></section>
   </main></>; }
 
-function NewsCard({ item, featured = false }: { item: typeof news[number]; featured?: boolean }) { return <Link to={`/news/${item.id}`} className={`news-card ${featured ? 'featured' : ''}`}><div className="news-image"><img src={item.image} alt="" loading="lazy" /></div><div className="news-meta"><span>{item.category}</span><span>{item.date}</span></div><h3>{item.title}</h3><p>{item.summary}</p><span className="text-link">Read story <ArrowUpRight size={15} /></span></Link>; }
+function NewsCard({ item, featured = false }: { item: typeof news[number]; featured?: boolean }) { return <Link to={`/news/${item.id}`} className={`news-card ${featured ? 'featured' : ''}`}><div className="news-image"><img src={item.image} alt={item.title} loading="lazy" onError={event => { event.currentTarget.src = '/images/hero-campus.jpg'; }} /></div><div className="news-meta"><span>{item.category}</span><span>{item.date}</span></div><h3>{item.title}</h3><p>{item.summary}</p><span className="text-link">Read story <ArrowUpRight size={15} /></span></Link>; }
 function EventRow({ event }: { event: typeof events[number] }) { return <div className="event-row"><div className="event-date"><strong>{event.day}</strong><span>{event.month}</span></div><div><span className="event-category">{event.category}</span><h3>{event.title}</h3><p>{event.description}</p></div><ArrowUpRight className="event-arrow" /></div>; }
 
 const pageCopy: Record<string, { kicker: string; title: string; description: string; sections: [string, string, string][] }> = {
@@ -176,7 +189,7 @@ function NewsDetail() {
   );
 }
 function EventsPage() { return <><PageHero kicker="Make a date" title="Gather, learn, celebrate." description="A simple events listing ready for your calendar and confirmed school dates." /><main className="section"><div className="container narrow">{events.map(event => <EventRow key={event.id} event={event} />)}</div></main></>; }
-function Resources() { return <><PageHero kicker="Useful things" title="Resources for the journey." description="Keep forms, handbooks and important links easy to find." /><main className="section"><div className="container resource-grid">{['Family handbook', 'Admissions checklist', 'Term dates', 'School policies'].map((item, i) => <div className="resource" key={item}><span>0{i + 1}</span><h3>{item}</h3><p>Important school information to support families and students throughout the year.</p><a href="#download" onClick={e => e.preventDefault()}>Download PDF <ArrowUpRight size={15} /></a></div>)}</div></main></>; }
+function Resources() { return <><PageHero kicker="Useful things" title="Resources for the journey." description="Official documents and useful information are available through the school office." /><main className="section"><div className="container resource-grid">{['Family handbook', 'Admissions checklist', 'Term dates', 'School policies'].map((item, i) => <div className="resource" key={item}><span>0{i + 1}</span><h3>{item}</h3><p>Request the latest approved version directly from the school office.</p><Link to="/contact">Request document <ArrowUpRight size={15} /></Link></div>)}</div></main></>; }
 function Contact() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'demo' | 'sent' | 'error'>('idle');
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -204,7 +217,7 @@ function Contact() {
     <>
       <PageHero kicker="Start a conversation" title="We would love to hear from you." description="Use the form below to share a question or request more information from the school." />
       <main className="section"><div className="container contact-grid">
-        <div><SectionTitle kicker="Say hello" title="Questions are a good place to start." copy="Choose the most convenient way to contact the school community." /><div className="contact-details"><a href={`mailto:${school.contact.email}`}>{school.contact.email}</a><span>{school.contact.phone}</span><span>{school.contact.address}</span></div></div>
+        <div><SectionTitle kicker="Say hello" title="Questions are a good place to start." copy="Choose the most convenient way to contact the school community." /><div className="contact-details"><span>{school.contact.address}</span><span>Official phone and email details will be published by the school office.</span></div></div>
         <form onSubmit={submit} className="contact-form">
           <label>Full name<input required name="name" autoComplete="name" /></label>
           <label>Email<input required type="email" name="email" autoComplete="email" /></label>
@@ -259,6 +272,12 @@ export default function App() {
       document.head.appendChild(canonical);
     }
     canonical.setAttribute('href', `https://brain-smart-school-amber.vercel.app${path}`);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    ogTitle?.setAttribute('content', title);
+    ogDescription?.setAttribute('content', description);
+    ogUrl?.setAttribute('content', `https://brain-smart-school-amber.vercel.app${path}`);
   }, [location.pathname]);
 
   return (
