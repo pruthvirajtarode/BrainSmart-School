@@ -20,9 +20,9 @@ export const nav = [
 ];
 
 export const news: NewsArticle[] = [
-  { id: 'learning-lab', title: 'Designing a school day around deeper questions', category: 'Learning', date: 'Oct 18, 2025', summary: 'An editorial preview about the ideas and rituals that can make learning more meaningful.', image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=85' },
-  { id: 'family-studio', title: 'Building a strong home–school partnership', category: 'Families', date: 'Sep 26, 2025', summary: 'Practical resources, thoughtful updates and open conversations for families.', image: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=900&q=85' },
-  { id: 'creative-thinking', title: 'Why creative thinking belongs in every subject', category: 'Ideas', date: 'Aug 09, 2025', summary: 'Explore the people, projects and questions shaping a vibrant learning community.', image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=85' },
+  { id: 'learning-lab', title: 'Designing a school day around deeper questions', category: 'Learning', date: 'Oct 18, 2025', summary: 'An editorial preview about the ideas and rituals that can make learning more meaningful.', image: '/images/classroom-diverse.jpg' },
+  { id: 'family-studio', title: 'Building a strong home–school partnership', category: 'Families', date: 'Sep 26, 2025', summary: 'Practical resources, thoughtful updates and open conversations for families.', image: '/images/family-learning.jpg' },
+  { id: 'creative-thinking', title: 'Why creative thinking belongs in every subject', category: 'Ideas', date: 'Aug 09, 2025', summary: 'Explore the people, projects and questions shaping a vibrant learning community.', image: '/images/students-learning.jpg' },
 ];
 
 export const events: SchoolEvent[] = [

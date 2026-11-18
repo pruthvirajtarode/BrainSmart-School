@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://example.com/</loc></url>
-  <url><loc>https://example.com/about</loc></url>
-  <url><loc>https://example.com/academics</loc></url>
-  <url><loc>https://example.com/contact</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/about</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/academics</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/parents</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/students</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/programs</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/news</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/events</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/resources</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/contact</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/admissions</loc></url>
+  <url><loc>https://brain-smart-school-amber.vercel.app/privacy</loc></url>
 </urlset>
