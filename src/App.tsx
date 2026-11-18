@@ -36,7 +36,7 @@ function HeroCarousel() {
 
   useEffect(() => {
     if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 2000);
+    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 1000);
     return () => window.clearInterval(timer);
   }, [paused]);
 
