@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, Check, Menu, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Menu, X } from 'lucide-react';
 import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { events, nav, news, pillars, school } from './data';
 
@@ -24,7 +24,80 @@ function Reveal({ children, className = '' }: { children: React.ReactNode; class
 function PageHero({ kicker, title, description }: { kicker: string; title: string; description: string }) { return <section className="page-hero"><div className="container"><span className="kicker">{kicker}</span><h1>{title}</h1><p>{description}</p></div></section>; }
 function SectionTitle({ kicker, title, copy, light = false }: { kicker: string; title: string; copy?: string; light?: boolean }) { return <div className={`section-title ${light ? 'light' : ''}`}><span className="kicker">{kicker}</span><h2>{title}</h2>{copy && <p>{copy}</p>}</div>; }
 
-function Home() { return <><section className="hero"><div className="hero-image" /><div className="hero-overlay" /><div className="container hero-content"><span className="kicker light">BRAINSMART SCHOOL · LEARNING WITH PURPOSE</span><h1>Where bright minds<br /><em>find their way.</em></h1><p>A considered learning environment where curiosity becomes confidence, and every student is invited to shape what comes next.</p><div className="button-row"><Button to="/about">Discover our story</Button><Button to="/contact" secondary>Start a conversation</Button></div></div><div className="hero-note">01 <span>Scroll to explore</span></div></section>
+const heroSlides = [
+  { src: '/images/hero-campus.jpg', alt: 'BrainSmart School campus and school building' },
+  { src: '/images/classroom-diverse.jpg', alt: 'Students learning together in a bright classroom' },
+  { src: '/images/family-learning.jpg', alt: 'A teacher helping a student with focused learning' },
+];
+
+function HeroCarousel() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => setActive(current => (current + 1) % heroSlides.length), 2000);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  const showPrevious = () => setActive(current => (current - 1 + heroSlides.length) % heroSlides.length);
+  const showNext = () => setActive(current => (current + 1) % heroSlides.length);
+
+  return (
+    <section
+      className="hero"
+      aria-roledescription="carousel"
+      aria-label="BrainSmart School highlights"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div className="hero-slides">
+        {heroSlides.map((slide, index) => (
+          <motion.img
+            key={slide.src}
+            className={`hero-slide ${index === active ? 'active' : ''}`}
+            src={slide.src}
+            alt={index === active ? slide.alt : ''}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? 'high' : 'auto'}
+            initial={false}
+            animate={{ opacity: index === active ? 1 : 0, scale: index === active ? 1 : 1.025 }}
+            transition={{ duration: 0.75 }}
+            aria-hidden={index !== active}
+          />
+        ))}
+      </div>
+      <div className="hero-overlay" />
+      <div className="container hero-content">
+        <span className="kicker light">BRAINSMART SCHOOL · LEARNING WITH PURPOSE</span>
+        <h1>Where bright minds<br /><em>find their way.</em></h1>
+        <p>A considered learning environment where curiosity becomes confidence, and every student is invited to shape what comes next.</p>
+        <div className="button-row"><Button to="/about">Discover our story</Button><Button to="/contact" secondary>Start a conversation</Button></div>
+      </div>
+      <div className="hero-controls" aria-label="Hero image controls">
+        <button type="button" onClick={showPrevious} aria-label="Previous image"><ArrowLeft size={16} /></button>
+        <div className="hero-dots" aria-label="Choose hero image">
+          {heroSlides.map((slide, index) => (
+            <button
+              type="button"
+              key={slide.src}
+              className={index === active ? 'active' : ''}
+              onClick={() => setActive(index)}
+              aria-label={`Show image ${index + 1}`}
+              aria-current={index === active ? 'true' : undefined}
+            />
+          ))}
+        </div>
+        <button type="button" onClick={showNext} aria-label="Next image"><ArrowRight size={16} /></button>
+      </div>
+      <div className="hero-note">{String(active + 1).padStart(2, '0')} <span>Scroll to explore</span></div>
+    </section>
+  );
+}
+
+function Home() { return <><HeroCarousel />
   <main><section className="intro section"><div className="container split"><SectionTitle kicker="A school with intention" title="Learning that stays with you." copy={school.description} /><div className="intro-copy"><p className="large-copy">The best education does more than prepare students for the next step. It helps them notice the world, find their voice and build the courage to make it better.</p><Button to="/about" secondary>Our approach</Button></div></div></section>
     <section className="philosophy section dark"><div className="container"><SectionTitle kicker="What guides us" title="The work behind the wonder." copy="Curiosity, creativity and care shape the learning experience at every stage." light /><div className="pillar-grid">{pillars.map(([num, title, copy]) => <Reveal key={num} className="pillar"><span>{num}</span><h3>{title}</h3><p>{copy}</p></Reveal>)}</div></div></section>
     <section className="section"><div className="container feature-grid"><Reveal className="feature-image"><img src={image} alt="Students reading and learning together in a library" /></Reveal><Reveal className="feature-content"><SectionTitle kicker="A wider view of learning" title="Space to think. Tools to explore." copy="From the first question to the final draft, our academic approach makes space for depth, experimentation and reflection." /><Button to="/academics">Explore academics</Button></Reveal></div></section>
