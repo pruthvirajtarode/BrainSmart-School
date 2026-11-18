@@ -9,7 +9,7 @@ const image = '/images/students-learning.jpg';
 function Header() {
   const [open, setOpen] = useState(false);
   return <><div className="announcement"><span>Announcement</span><strong>Admissions information is coming soon.</strong><Link to="/admissions">Explore the process <ArrowUpRight size={14} /></Link></div>
-    <header className="site-header"><Link to="/" className="brand" onClick={() => setOpen(false)}><span className="brand-mark">B<span>•</span></span><span><b>BrainSmart</b><small>School</small></span></Link>
+    <header className="site-header"><Link to="/" className="brand" onClick={() => setOpen(false)} aria-label="BrainSmart School home"><img className="brand-logo" src="/images/school-logo.jpg" alt="" /><span><b>BrainSmart</b><small>Elementary School</small></span></Link>
       <nav className="desktop-nav">{nav.map(item => <NavLink key={item.to} to={item.to} className={({ isActive }) => isActive ? 'active' : ''}>{item.label}</NavLink>)}</nav>
       <Link className="header-cta" to="/admissions">Admissions <ArrowUpRight size={16} /></Link>
       <button className="menu-toggle" onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open}>{open ? <X /> : <Menu />}</button>
@@ -17,7 +17,7 @@ function Header() {
     <AnimatePresence>{open && <motion.nav className="mobile-nav" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>{nav.map(item => <Link key={item.to} to={item.to} onClick={() => setOpen(false)}>{item.label}<ArrowUpRight size={16} /></Link>)}<Link to="/contact" onClick={() => setOpen(false)}>Contact <ArrowUpRight size={16} /></Link></motion.nav>}</AnimatePresence></>;
 }
 
-function Footer() { return <footer><div className="footer-main"><div><Link to="/" className="brand inverse"><span className="brand-mark">B<span>•</span></span><span><b>BrainSmart</b><small>School</small></span></Link><p className="footer-copy">{school.description}</p></div><div className="footer-links"><div><span className="footer-label">Explore</span><Link to="/about">About us</Link><Link to="/academics">Academics</Link><Link to="/students">Student life</Link></div><div><span className="footer-label">Connect</span><Link to="/parents">For families</Link><Link to="/news">News & events</Link><Link to="/contact">Contact</Link></div></div><div className="footer-contact"><span className="footer-label">Start a conversation</span><a href={`mailto:${school.contact.email}`}>{school.contact.email}</a><span>{school.contact.address}</span></div></div><div className="footer-bottom"><span>© 2025 BrainSmart School</span><Link to="/privacy">Privacy policy</Link></div></footer>; }
+function Footer() { return <footer><div className="footer-main"><div><Link to="/" className="brand inverse" aria-label="BrainSmart School home"><img className="brand-logo footer-logo" src="/images/school-logo.jpg" alt="" /><span><b>BrainSmart</b><small>Elementary School</small></span></Link><p className="footer-copy">{school.description}</p></div><div className="footer-links"><div><span className="footer-label">Explore</span><Link to="/about">About us</Link><Link to="/academics">Academics</Link><Link to="/students">Student life</Link></div><div><span className="footer-label">Connect</span><Link to="/parents">For families</Link><Link to="/news">News & events</Link><Link to="/contact">Contact</Link></div></div><div className="footer-contact"><span className="footer-label">Start a conversation</span><a href={`mailto:${school.contact.email}`}>{school.contact.email}</a><span>{school.contact.address}</span></div></div><div className="footer-bottom"><span>© 2025 BrainSmart School</span><Link to="/privacy">Privacy policy</Link></div></footer>; }
 
 function Button({ to, children, secondary = false }: { to: string; children: React.ReactNode; secondary?: boolean }) { return <Link className={`button ${secondary ? 'secondary' : ''}`} to={to}>{children}<ArrowUpRight size={16} /></Link>; }
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) { return <motion.div className={className} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-70px' }} transition={{ duration: .6 }}>{children}</motion.div>; }
@@ -86,7 +86,7 @@ function GenericPage({ type }: { type: keyof typeof pageCopy }) {
   );
 }
 
-function NewsPage() { const [query, setQuery] = useState(''); const filtered = news.filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase())); return <><PageHero kicker="Notes from the community" title="News, ideas & updates." description="A structured, editable news space for the stories you want families to remember." /><main className="section"><div className="container"><input className="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search stories..." aria-label="Search stories" /><div className="news-grid news-list">{filtered.map(item => <NewsCard key={item.id} item={item} />)}</div>{filtered.length === 0 && <p className="empty">No stories match that search yet.</p>}</div></main></>; }
+function NewsPage() { const [query, setQuery] = useState(''); const filtered = news.filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase())); return <><PageHero kicker="Notes from the community" title="News, ideas & updates." description="The latest stories, milestones and conversations from across the school community." /><main className="section"><div className="container"><input className="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search stories..." aria-label="Search stories" /><div className="news-grid news-list">{filtered.map(item => <NewsCard key={item.id} item={item} />)}</div>{filtered.length === 0 && <p className="empty">No stories match that search yet.</p>}</div></main></>; }
 function NewsDetail() {
   const { slug } = useParams();
   const article = news.find(item => item.id === slug);
@@ -99,7 +99,7 @@ function NewsDetail() {
           <img src={article.image} alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', marginBottom: '40px' }} />
           <span className="kicker">{article.date}</span>
           <p>{article.summary}</p>
-          <p>This is an editable article preview. Replace this text with the school’s approved story before publishing.</p>
+          <p>Strong learning communities grow through shared stories, thoughtful reflection and the everyday work of students and educators.</p>
           <Button to="/news" secondary>Back to news</Button>
         </article>
       </main>
@@ -133,9 +133,9 @@ function Contact() {
   }
   return (
     <>
-      <PageHero kicker="Start a conversation" title="We would love to hear from you." description="Add approved contact information and connect a secure endpoint before publishing enquiries." />
+      <PageHero kicker="Start a conversation" title="We would love to hear from you." description="Use the form below to share a question or request more information from the school." />
       <main className="section"><div className="container contact-grid">
-        <div><SectionTitle kicker="Say hello" title="Questions are a good place to start." copy="Use the details below as placeholders until the school’s official contact information is confirmed." /><div className="contact-details"><a href={`mailto:${school.contact.email}`}>{school.contact.email}</a><span>{school.contact.phone}</span><span>{school.contact.address}</span></div></div>
+        <div><SectionTitle kicker="Say hello" title="Questions are a good place to start." copy="Choose the most convenient way to contact the school community." /><div className="contact-details"><a href={`mailto:${school.contact.email}`}>{school.contact.email}</a><span>{school.contact.phone}</span><span>{school.contact.address}</span></div></div>
         <form onSubmit={submit} className="contact-form">
           <label>Full name<input required name="name" autoComplete="name" /></label>
           <label>Email<input required type="email" name="email" autoComplete="email" /></label>
@@ -151,8 +151,8 @@ function Contact() {
     </>
   );
 }
-function Admissions() { return <><PageHero kicker="Admissions" title="A thoughtful start." description="A clear admissions page structure for your process, requirements and next steps." /><main className="section"><div className="container editorial-row"><span className="kicker">01 / The process</span><div><h2>Make the next step feel simple.</h2><p className="large-copy">Add your confirmed admissions timeline, age groups, requirements and enquiry details here.</p><Button to="/contact">Make an enquiry</Button></div></div></main></>; }
-function Privacy() { return <><PageHero kicker="Privacy" title="Privacy policy." description="Editable placeholder content. This page should be reviewed and completed by the school’s legal adviser before launch." /><main className="section"><div className="container narrow prose"><h2>About this website</h2><p>This website is a design and content foundation. Replace this placeholder with the school’s approved privacy notice, including information about contact forms, analytics, cookies and data retention.</p><h2>Questions</h2><p>For privacy questions, add the official contact point supplied by the school.</p></div></main></>; }
+function Admissions() { return <><PageHero kicker="Admissions" title="A thoughtful start." description="A clear admissions process for families considering BrainSmart Elementary School." /><main className="section"><div className="container editorial-row"><span className="kicker">01 / The process</span><div><h2>Make the next step feel simple.</h2><p className="large-copy">Contact the school to confirm current enrolment information, required documents and available grade levels.</p><Button to="/contact">Make an enquiry</Button></div></div></main></>; }
+function Privacy() { return <><PageHero kicker="Privacy" title="Privacy policy." description="Information about how this website handles information submitted through its communication features." /><main className="section"><div className="container narrow prose"><h2>Information we collect</h2><p>Information submitted through the contact form may include a name, email address, phone number and message. Only use this website for legitimate school enquiries.</p><h2>Cookies and external services</h2><p>This page should be completed with the school’s approved analytics and cookie practices before launch.</p><h2>Questions</h2><p>Privacy questions should be directed to the school using the official contact details published on this website.</p></div></main></>; }
 function NotFound() { return <><PageHero kicker="404" title="This page wandered off." description="The link may have changed, but there is more to explore." /><div className="container not-found"><Button to="/">Back home</Button></div></>; }
 
 export default function App() {

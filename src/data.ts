@@ -3,7 +3,7 @@ export type SchoolEvent = { id: string; day: string; month: string; title: strin
 
 export const school = {
   name: 'BrainSmart',
-  fullName: 'BrainSmart School',
+  fullName: 'BrainSmart Elementary School',
   eyebrow: 'A place to think boldly',
   description: 'A thoughtful school community dedicated to purposeful learning, meaningful relationships and a future-ready education.',
   mission: 'To create the conditions for every learner to become a confident thinker, generous collaborator and lifelong learner.',
@@ -27,7 +27,7 @@ export const news: NewsArticle[] = [
 
 export const events: SchoolEvent[] = [
   { id: 'open-house', day: '12', month: 'NOV', title: 'Open house / discover BrainSmart', category: 'Community', description: 'A prospective family event to meet the school community and ask questions.' },
-  { id: 'family-forum', day: '21', month: 'NOV', title: 'Family learning forum', category: 'Families', description: 'An editable listing for conversations, workshops and school-wide gatherings.' },
+  { id: 'family-forum', day: '21', month: 'NOV', title: 'Family learning forum', category: 'Families', description: 'Join a conversation with educators and families across the school community.' },
   { id: 'maker-week', day: '04', month: 'DEC', title: 'Maker week showcase', category: 'Student life', description: 'Celebrate the ideas and work students have been exploring this term.' },
 ];
 
